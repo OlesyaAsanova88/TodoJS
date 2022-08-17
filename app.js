@@ -6,8 +6,8 @@ const headerButton = document.querySelector('.header-button')
 
 const toDoData = [
     function () {
-        todoList.textContent = localStorage.getItem('.todo-list')
-        todoCompleted.textContent = localStorage.getItem('.todo-completed')
+        todoList.textContent = localStorage.getItem('.todo-list').JSON.parse
+        todoCompleted.textContent = localStorage.getItem('.todo-completed').JSON.parse
     }
 ]
 
@@ -65,8 +65,8 @@ todoControl.addEventListener('submit', function (event) {
 })
 
 headerButton.addEventListener('click', function () {
-    localStorage.setItem('.todo-list', headerInput.value)
-    localStorage.setItem('todo-completed', headerInput.value)
+    localStorage.setItem('.todo-list', headerInput.value).JSON.stringify
+    localStorage.setItem('todo-completed', headerInput.value).JSON.stringify
 })
 
 toDoData()
