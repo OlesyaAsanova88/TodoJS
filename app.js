@@ -4,17 +4,11 @@ const todoList = document.querySelector('.todo-list')
 const todoCompleted = document.querySelector('.todo-completed')
 const headerButton = document.querySelector('.header-button')
 
-const toDoData = [
-    function () {
-        todoList.textContent = localStorage.getItem('.todo-list').JSON.parse
-        todoCompleted.textContent = localStorage.getItem('.todo-completed').JSON.parse
-    }
-]
-
+let toDoData = []
 const render = function () {
     todoList.innerHTML = ''
     todoCompleted.innerHTML = ''
-    toDoData.forEach(function (item) {
+    toDoData.forEach(function (item, index) {
         const li = document.createElement('li')
 
         li.classList.add('todo-item')
@@ -33,18 +27,21 @@ const render = function () {
 
         li.querySelector('.todo-complete').addEventListener('click', function () {
             item.completed = !item.completed
+            localStorage.setItem('toDoData', JSON.stringify(toDoData))
             render()
         })
 
         li.querySelector('.todo-remove').addEventListener('click', function () {
-            if (item.completed) {
-                todoCompleted.remove(li)
-            } else {
-                todoList.remove(li)
-            }
+            toDoData.splice(index, 1)
+            localStorage.setItem('toDoData', JSON.stringify(toDoData))
             render()
         })
     })
+}
+
+if (localStorage.getItem('toDoData')) {
+    toDoData = JSON.parse(localStorage.getItem('toDoData'));
+    render()
 }
 
 todoControl.addEventListener('submit', function (event) {
@@ -52,22 +49,18 @@ todoControl.addEventListener('submit', function (event) {
 
     const newToDo = {
         text: headerInput.value,
-        completed: false,
+        completed: false
     }
 
     if (headerInput.value === '') {
         alert('Введите заметку')
+        render()
     } else {
         toDoData.push(newToDo)
         headerInput.value = ''
         render()
+        localStorage.setItem('toDoData', JSON.stringify(toDoData));
     }
 })
 
-headerButton.addEventListener('click', function () {
-    localStorage.setItem('.todo-list', headerInput.value).JSON.stringify
-    localStorage.setItem('todo-completed', headerInput.value).JSON.stringify
-})
-
-toDoData()
 
